@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<script src="../../node_modules/angular/angular.js"></script>
+
+<body ng-app="app" ng-controller="firstCtrl">
+    <span>
+        {{name}}
+    </span>
+</body>
+<script>
+    angular.module('app', [])
+        .factory('Http', function ($http, $q) {
+            var send = function (url,lastRes) {
+                return new $q(function (resolve, reject) {
+                    $http.get(url)
+                    .then(function (res) {
+                        if (res) {
+                            if(lastRes&&angular.isArray(lastRes)){
+                            resolve(lastRes.concat(res))
+                            }else{
+                                resolve(res)
+                            }
+                        } else {
+                            fail(res)
+                        }
+                    }).catch(function (error) {
+                        console.log('获取',url,'失败')
+                        console.log('error:', error)
+                    })
+                })
+                var fail = function (res) {
+                }
+            }
+
+            return {
+                send:send,
+                getJson:function(url){
+                    return send(url)
+                },
+                getJson_1: function () {
+                    var url = 'data/1.json'
+                    return send(url)
+                },
+                getJson_2: function () {
+                    var url = 'data/2.json'
+                    return send(url)
+                },
+                getJson_3: function () {
+                    var url = 'data/3.json'
+                    return send(url)
+                }
+            }
+
+        })
+        .controller('firstCtrl', function ($scope,$q, Http) {
+               Http.send('data/1.json',[])
+               .then(function(res){
+                   var url = res[res.length-1].data.url
+                   return Http.send(url,res)
+               })
+               .then(function(res){
+                    var url = res[res.length-1].data.url
+                   return Http.send(url,res)
+               })
+               .then(function(res){
+                   console.log(res)
+               })
+
+            // Http.getJson('data/1.json',[]).then(function(res){
+            //     return Http.getJson(res.data.url)
+            // }).then(function(res){
+            //     return Http.getJson(res.data.url)
+            // }).then(function(res){
+            //     console.log(res)
+            // })
+
+
+
+
+
+
+            })
+</script>
+
+</html>
