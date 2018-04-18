@@ -1,5 +1,6 @@
 {
 	"name": "shuwang",
 	"age": 28,
-	"url": "data/2.json"
+	"url": "data/2.json",
+	"code":2
 }
