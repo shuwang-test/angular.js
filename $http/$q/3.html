@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<script src="../../node_modules/angular/angular.js"></script>
+
+<body ng-app="app" ng-controller="firstCtrl">
+    <span>
+        {{name}}
+    </span>
+</body>
+<script>
+    angular.module('app', [])
+        .controller('firstCtrl', function ($scope,$q) {
+            var createPromise = function(fn){
+                return new $q(function(resolve,reject){
+                    try{
+                        fn()
+                        resolve()
+                    }catch(error){
+                        console.log(fn)
+                        console.log(error)
+                    }
+                }).catch(function(error){
+                    console.log(error)
+                })
+            }
+            var f1 = function(){
+                console.log(1)
+            }
+            var f2 = function(){
+                console.log(2)
+            }
+            var f3 = function(){
+                console.log(3)
+            }
+            
+            createPromise(f1).then(function(){
+                return createPromise(f2)
+            }).then(function(){
+                return createPromise(f3)
+            })
+
+
+
+        })
+</script>
+
+</html>
