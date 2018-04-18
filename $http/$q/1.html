@@ -11,7 +11,10 @@
 
 <body ng-app="app" ng-controller="firstCtrl">
     <span>
-        {{name}}
+        {{name1}}
+    </span>
+    <span>
+        {{name2}}
     </span>
 </body>
 <script>
@@ -20,13 +23,13 @@
             var send = function (url) {
                 return new $q(function (resolve, reject) {
                     $http.get(url).then(function (res) {
-                        if (res.data.name === 'shuwang') {
+                        if (res.data.code === 0) {
                             resolve(res)
                         } else {
                             fail(res)
                         }
                     }).catch(function (error) {
-                        console.log('error:', error)
+                        console.log('http-error', 'status: ', error.status)
                     })
                 })
             }
@@ -42,16 +45,23 @@
                 getJson_2: function () {
                     var url = 'data/2.json'
                     return send(url)
+                },
+                getJson_3: function () {
+                    var url = 'data/3.json'
+                    return send(url)
                 }
             }
 
         })
         .controller('firstCtrl', function ($scope, Http) {
             Http.getJson_1().then(function (res) {
-                $scope.name = res.data.name
+                $scope.name1 = res.data.name
             })
             Http.getJson_2().then(function (res) {
-                $scope.name = res.data.name
+                $scope.name2 = res.data.name
+            })
+            Http.getJson_3().then(function (res) {
+                $scope.name2 = res.data.name
             })
 
         })
