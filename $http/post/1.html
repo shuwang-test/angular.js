@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>1.html</title>
+    <script src="../../node_modules/angular/angular.js"></script>
+    <script src="../../node_modules/jquery/dist/jquery.js"></script>
+</head>
+<body ng-app="app" ng-controller="firstCtrl">
+    
+</body>
+<script>
+    'use strict'
+    angular.module('app',[])
+        .factory('TransformRequest',function(){
+            var stringifyPrimitive = function(v) {
+                    switch (typeof v) {
+                        case 'string':
+                        return v;
+
+                        case 'boolean':
+                        return v ? 'true' : 'false';
+
+                        case 'number':
+                        return isFinite(v) ? v : '';
+
+                        default:
+                        return '';
+                    }
+                    }
+            var transformRequest = function(obj, sep, eq, name) {
+                    sep = sep || '&';
+                    eq = eq || '=';
+                    if (obj === null) {
+                        obj = undefined;
+                    }
+
+                    if (typeof obj === 'object') {
+                        return Object.keys(obj).map(function(k) {
+                        var ks = encodeURIComponent(stringifyPrimitive(k)) + eq;
+                        if (Array.isArray(obj[k])) {
+                            return obj[k].map(function(v) {
+                            return ks + encodeURIComponent(stringifyPrimitive(v));
+                            }).join(sep);
+                        } else {
+                            return ks + encodeURIComponent(stringifyPrimitive(obj[k]));
+                        }
+                        }).filter(Boolean).join(sep);
+                    }
+                    if (!name) return '';
+                    return encodeURIComponent(stringifyPrimitive(name)) + eq +
+                            encodeURIComponent(stringifyPrimitive(obj));
+                    }
+            
+            var transformRequest2 = (function fn(obj) {
+                var query = '', name, value, fullSubName, subName, subValue, innerObj, i;
+                for (name in obj) {
+                value = obj[name];
+                if (value instanceof Array) {
+                    for (i = 0; i < value.length; ++i) {
+                    subValue = value[i];
+                    fullSubName = name + '[' + i + ']';
+                    innerObj = {};
+                    innerObj[fullSubName] = subValue;
+                    query += fn(innerObj) + '&';
+                    }
+                } else if (value instanceof Object) {
+                    for (subName in value) {
+                    subValue = value[subName];
+                    fullSubName = name + '[' + subName + ']';
+                    innerObj = {};
+                    innerObj[fullSubName] = subValue;
+                    query += fn(innerObj) + '&';
+                    }
+                } else if (value !== undefined && value !== null)
+                    query += encodeURIComponent(name) + '=' + encodeURIComponent(value) + '&';
+                }
+                return query.length ? query.substr(0, query.length - 1) : query;
+            })
+            return {
+                transformRequest:transformRequest,
+                transformRequest2:transformRequest2
+            }
+                })
+        .controller('firstCtrl',function($http,TransformRequest){
+
+            var data = {
+                name:'shuwang',
+                password:'123456',
+                wife:[{
+                    name:'lingling',
+                    age:25
+                }]
+            }
+            console.log(TransformRequest.transformRequest(data))
+            console.log(TransformRequest.transformRequest2(data))
+            console.log($.param(data))
+            // $http({
+            //     url:'http://localhost',
+            //     method:'POST',
+            //     data:{
+            //         name:'shuwang',
+            //         password:'123456'
+            //     }
+            //     ,
+            //     headers:{'Content-Type': 'application/x-www-form-urlencoded'}
+            //     ,
+            //     transformRequest:null
+            // }).then(function(res){
+            //     console.log(res.data)
+            // })
+        })
+</script>
+</html>
