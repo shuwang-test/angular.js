@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/study5456/angular.js#readme",
   "dependencies": {
-    "angular": "^1.6.0"
+    "angular": "^1.6.0",
+    "jquery": "^3.3.1"
   }
 }
