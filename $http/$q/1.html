@@ -11,10 +11,10 @@
 
 <body ng-app="app" ng-controller="firstCtrl">
     <span>
-        {{name1}}
+        {{name1.test.test.test||'暂无姓名'}}
     </span>
     <span>
-        {{name2}}
+        {{name2.test}}
     </span>
 </body>
 <script>
@@ -55,13 +55,13 @@
         })
         .controller('firstCtrl', function ($scope, Http) {
             Http.getJson_1().then(function (res) {
-                $scope.name1 = res.data.name
+                // $scope.name1 = res.data.name
             })
             Http.getJson_2().then(function (res) {
-                $scope.name2 = res.data.name
+                // $scope.name2 = res.data.name
             })
             Http.getJson_3().then(function (res) {
-                $scope.name2 = res.data.name
+                // $scope.name2 = res.data.name
             })
 
         })

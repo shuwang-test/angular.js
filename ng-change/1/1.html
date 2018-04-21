@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>1</title>
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.css">
+    <script src="../../node_modules/angular/angular.js"></script>
+</head>
+
+<body ng-app="app" ng-controller="firstCtrl">
+    <input type="password" ng-change="change()" ng-model="model.name" show-password>
+
+    <input type="password" ng-change="change()" ng-model="model.password" show-password>
+</body>
+<script>
+    angular.module('app', [])
+        .directive('showPassword', function ($timeout) {
+            return {
+                restrict: 'A',
+                link: function (scope, eles, attrs) {
+                    eles.bind('input', function () {
+                        $timeout.cancel(window.timer)
+                        var self = this
+                        self.type = 'text'
+                        window.timer = $timeout(function () {
+                            self.type = 'password'
+                        }, 500)
+                    })
+                }
+            }
+        })
+        .controller('firstCtrl', function ($scope) {
+            $scope.model = {}
+            $scope.change = change
+            function change() {
+                console.log(111111)
+            }
+        })
+</script>
+
+</html>
