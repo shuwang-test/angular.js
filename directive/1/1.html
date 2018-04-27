@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>1</title>
+    <script src="../../node_modules/angular/angular.js"></script>
+</head>
+
+<body ng-app="app" ng-controller="firstCtrl">
+    <div>
+        <div my-customer></div>
+    </div>
+</body>
+<script>
+    angular.module('app', [])
+        .controller('firstCtrl', function ($scope) {
+            $scope.customer = {
+                name: 'Naomi',
+                address: '1600 Amphitheatre'
+            };
+        })
+        .directive('myCustomer', function () {
+            return {
+                template: 'Name: {{customer.name}} Address: {{customer.address}}'
+            };
+        });
+</script>
+
+</html>

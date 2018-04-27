@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>$window</title>
+    <script src="../node_modules/angular/angular.js"></script>
+    <script>
+        angular.module('app', [])
+            .controller('firstCtrl', function ($window, $document) {
+                // console.log($window)]
+                var test = function () {
+                    console.log($document[0].readyState)
+                }
+                if (document.readyState === 'interactive' || document.readyState === 'complete') {
+                    test()
+                } else {
+                    document.addEventListener('DOMContentLoaded ', test)
+                }
+            })
+    </script>
+</head>
+
+<body ng-app="app" ng-controller="firstCtrl">
+
+</body>
+
+</html>

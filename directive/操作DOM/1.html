@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>操作dom-1</title>
+    <script src="../../node_modules/angular/angular.js"></script>
+    <script>
+        console.log(document.readyState)
+    </script>
+</head>
+
+<body ng-app="app" ng-controller="firstCtrl">
+    <div>
+        <span>Date format:</span>
+        <input ng-model="format1">
+        <span my-current-time="format1"></span>
+    </div>
+    <div>
+        <span>Date format:</span>
+        <input ng-model="format2">
+        <span my-current-time="format2"></span>
+    </div>
+</body>
+<script>
+    angular.module('app', [])
+        .controller('firstCtrl', function ($scope) {
+            $scope.format1 = 'yyyy-MM-dd hh:mm:ss'
+        })
+        .directive('myCurrentTime', function ($document, $window, $interval, $timeout, dateFilter) {
+            return {
+                scope: {
+                    myCurrentTime: '='
+                },
+                link: function (scope, eles, attrs) {
+
+                    $window.addEventListener('DOMContentLoaded', function () {
+                        console.log($document[0].readyState)
+                    })
+
+                    var updateTime = function () {
+                        if (scope.myCurrentTime) {
+                            eles.text(dateFilter(new Date(), scope.myCurrentTime))
+                        } else {
+                            eles.text('')
+                        }
+                    }
+                    scope.$watch('myCurrentTime', function (newValue) {
+                        scope.myCurrentTime = newValue
+                        updateTime()
+                    })
+
+                    // var timer = $interval(updateTime, 10000)
+
+                    // eles.on('$destroy', function () {
+                    //     $interval.cancel(timer)
+                    // })
+
+                }
+            }
+        })
+</script>
+
+</html>
