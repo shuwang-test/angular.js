@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>2</title>
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.css">
+    <script src="../../node_modules/angular/angular.js"></script>
+    <style>
+        .text-color-red {
+            color: red;
+        }
+    </style>
+</head>
+
+<body ng-app="app" ng-controller="firstCtrl">
+    <button ng-click="changePrice()" ng-mousedown="test()" ng-mouseup="test2()">change price</button>
+    <button ng-click="changeName()">change name</button>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h1>Products</h1>
+        </div>
+        <div class="panel-body">
+            <div unordered-list='products' list-property='name'>
+                {{test}}
+            </div>
+            <div unordered-list='products' list-property='price | currency'>
+                {{test}}
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    angular.module('app', [])
+        .directive('unorderedList', function () {
+            return function (scope, element, attrs) {
+                var data = scope[attrs['unorderedList']]
+                var expression = attrs['listProperty']
+                var ulElement = angular.element('<ul>')
+                element.append(ulElement)
+                element.ready(function () {
+                    console.log(element.scope())
+                })
+                angular.forEach(data, function (item, index) {
+                    var liElement = angular.element('<li>')
+                    liElement.css({
+                        cursor: 'pointer'
+                    })
+                    liElement.text(scope.$eval(expression, item))
+                    liElement.on('click', function () {
+                        liElement.toggleClass('text-color-red')
+                    })
+                    ulElement.append(liElement)
+                    scope.$watch(function () {
+                        return scope.$eval(expression, item)
+                    }, function (newVal) {
+                        liElement.text(newVal)
+                    })
+                })
+            }
+        })
+        .controller('firstCtrl', function ($scope, $interval) {
+            $scope.changePrice = changePrice
+            $scope.changeName = changeName
+            function changePrice() {
+                angular.forEach($scope.products, function (product, index) {
+                    product.price++;
+                })
+            }
+            function changeName() {
+                angular.forEach($scope.products, function (product, index) {
+                    product.name += '1';
+                })
+            }
+            $scope.products = [
+                { name: "Apples", category: "Fruit", price: 1.20, expiry: 10 },
+                { name: "Bananas", category: "Fruit", price: 2.42, expiry: 7 },
+                { name: "Pears", category: "Fruit", price: 2.02, expiry: 6 }
+            ]
+        })
+</script>
+
+</html>

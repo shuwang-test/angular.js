@@ -8,10 +8,15 @@
     <title>2</title>
     <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.css">
     <script src="../../node_modules/angular/angular.js"></script>
+    <style>
+        .text-color-red {
+            color: red;
+        }
+    </style>
 </head>
 
 <body ng-app="app" ng-controller="firstCtrl">
-    <button ng-click="changePrice()">change price</button>
+    <button ng-click="changePrice()" ng-mousedown="test()" ng-mouseup="test2()">change price</button>
     <button ng-click="changeName()">change name</button>
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -19,10 +24,9 @@
         </div>
         <div class="panel-body">
             <div unordered-list='products' list-property='name'>
-                {{test}}
+                1234
             </div>
             <div unordered-list='products' list-property='price | currency'>
-                {{test}}
             </div>
         </div>
     </div>
@@ -30,45 +34,24 @@
 <script>
     angular.module('app', [])
         .directive('unorderedList', function () {
-            return function (scope, element, attrs) {
-                console.log('scope', scope)
-                console.log('element', element)
-                console.log('attrs', attrs)
-                var data = scope[attrs['unorderedList']]
-                var propertyExpression = attrs['listProperty']
-                console.log(propertyExpression)
-                if (angular.isArray(data)) {
-                    var ulElement = angular.element('<ul>')
-                    element.append(ulElement)
-                    angular.forEach(data, function (item, index) {
-                        var liElement = angular.element('<li>').text(scope.$eval(propertyExpression, item))
-                        ulElement.append(liElement)
-                        scope.$watch(function (scope) {
-                            return scope.$eval(propertyExpression, item)
-                        }, function (newVal) {
-                            liElement.text(newVal)
-                        })
-                    })
+            return {
+                replace: true,
+                templateUrl: 'template.html',
+                link: function (scope, element, attrs) {
+                    scope.data = scope[attrs['unorderedList']]
                 }
             }
         })
-        .controller('firstCtrl', function ($scope) {
+        .controller('firstCtrl', function ($scope, $interval) {
             $scope.changePrice = changePrice
             $scope.changeName = changeName
             function changePrice() {
-                console.log(1)
                 angular.forEach($scope.products, function (product, index) {
-                    if (index === 0) {
-                        return
-                    }
                     product.price++;
                 })
             }
             function changeName() {
                 angular.forEach($scope.products, function (product, index) {
-                    if (index === 0) {
-                        return
-                    }
                     product.name += '1';
                 })
             }

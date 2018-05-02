@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>2</title>
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.css">
+    <script src="../../node_modules/angular/angular.js"></script>
+    <style>
+        .text-color-red {
+            color: red;
+        }
+    </style>
+</head>
+
+
+<body ng-app="app">
+    <div ng-controller="scopeCtrl" class="panel panel-default">
+        <div class="panel-body" scope-demo></div>
+        <div class="panel-body" scope-demo></div>
+    </div>
+</body>
+<script>
+    angular.module("app", [])
+        .directive("scopeDemo", function () {
+            return {
+                template:
+                    "<div class='panel-body'>Name: <input ng-model='name' /></div>",
+                scope: true,
+                link: function (scope, element, attrs) {
+                    console.log(scope)
+                }
+            }
+        })
+        .controller("scopeCtrl", function ($scope) {
+            // do nothing - no behaviours required
+            $scope.name = 'this is a test'
+        });
+</script>
+
+</html>
