@@ -1,4 +1,4 @@
-# study angular.js(https://github.com/study5456/angular.js)
+# [study angular.js](https://github.com/study5456/angular.js)
 
 [http://www.angularjs.net.cn](http://www.angularjs.net.cn)
 
