@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>1.1.1</title>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet">
+    <script src="../node_modules/angular/angular.js"></script>
+    <style>
+        .vertical-align-middle {
+            vertical-align: middle !important;
+            color: red;
+        }
+
+        body {
+            padding: 50px;
+        }
+    </style>
+</head>
+
+<body ng-controller="firstCtrl">
+    <table class="table table-bordered">
+        <tr>
+            <th>编号</th>
+            <th>名字</th>
+            <th>单元</th>
+            <th>层数</th>
+            <th>操作</th>
+        </tr>
+        <tr>
+            <td rowspan="5">一幢</td>
+        </tr>
+        <tr>
+            <td rowspan="5">一幢</td>
+        </tr>
+        <tr>
+            <td>一幢</td>
+            <td>一幢</td>
+            <td>一幢</td>
+        </tr>
+        <tr>
+            <td>一幢</td>
+            <td>一幢</td>
+            <td>一幢</td>
+        </tr>
+        <tr>
+            <td>一幢</td>
+            <td>一幢</td>
+            <td>一幢</td>
+        </tr>
+    </table>
+    <table class="table table-bordered">
+        <tr>
+            <th>编号</th>
+            <th>名字</th>
+            <th>操作整幢</th>
+            <th>单元</th>
+            <th>层数</th>
+            <th>操作单元</th>
+            <th>操作整幢</th>
+        </tr>
+        <tbody ng-repeat="item in items">
+            <tr>
+                <td rowspan="{{item.units.length+3}}" class="vertical-align-middle">
+                    {{item.index}}
+                </td>
+            </tr>
+            <tr>
+                <td rowspan="{{item.units.length+3}}" class="vertical-align-middle">
+                    {{item.name}}
+                    <button ng-click="addUnit(item)">增加单元</button>
+                </td>
+            </tr>
+            <tr>
+                <td rowspan="{{item.units.length+3}}" class="vertical-align-middle">
+                    <button>编辑</button>
+                    <button>删除</button>
+                </td>
+            </tr>
+            <tr ng-repeat="unit in item.units track by $index">
+                <td>
+                    {{unit.name}}
+                </td>
+                <td>
+                    {{unit.floor}}
+                </td>
+                <td>
+                    <button>编辑</button>
+                    <button ng-click="deleteUnit(item,$index)">删除</button>
+                </td>
+            </tr>
+            <tr>
+                <td rowspan="{{item.units.length+3}}">
+                    111111111111111111111
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+<script>
+    angular.module('app', [])
+        .controller('firstCtrl', function ($scope) {
+            $scope.addUnit = function (item) {
+                item.units.push({
+                    name: '1',
+                    floor: 3
+                })
+            }
+            $scope.deleteUnit = function (item, index) {
+                item.units.splice(index, 1)
+            }
+            $scope.items = [
+                {
+                    index: 1,
+                    name: '1幢',
+                    units: [
+                        {
+                            name: '1',
+                            floor: 3
+                        }
+                    ]
+                },
+                {
+                    index: 2,
+                    name: '2幢',
+                    units: [
+                        {
+                            name: '1',
+                            floor: 3
+                        },
+                        {
+                            name: '1',
+                            floor: 3
+                        },
+                        {
+                            name: '1',
+                            floor: 3
+                        },
+                        {
+                            name: '1',
+                            floor: 3
+                        }
+                    ]
+                }
+            ]
+        })
+</script>
+
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ng-visible</title>
+    <script src="../../node_modules/angular/angular.js"></script>
+</head>
+
+<body ng-app="app" ng-controller="firstCtrl">
+    <div sw-visible='visible.length>0'>
+        this is sw-visible
+    </div>
+    <div sw-visible='visible'>
+        this is sw-visible
+    </div>
+    <button ng-click="change()"> click me</button>
+</body>
+<script>
+    angular.module('app', [])
+        .directive('swVisible', function () {
+            return {
+                restrict: 'A',
+                link: function (scope, eles, attrs) {
+                    console.log(scope, eles, attrs)
+                    eles.css({
+                        visibility: 'hidden'
+                    })
+                    scope.$watch(attrs['swVisible'], function (newVal, oldVal) {
+                        console.log(scope.$eval)
+                        console.log(newVal)
+                        // if (scope.$eval(newVal)) {
+                        //     eles.css({
+                        //         visibility: 'visible'
+                        //     })
+                        // } else {
+                        //     eles.css({
+                        //         visibility: 'hidden'
+                        //     })
+                        // }
+                    })
+                }
+            }
+        })
+</script>
+<script>
+    angular.module('app')
+        .controller('firstCtrl', function ($scope) {
+            init()
+            function init() {
+                $scope.visible = []
+            }
+            $scope.change = function () {
+                if ($scope.visible.length == 0) {
+                    $scope.visible = [1]
+                } else {
+                    $scope.visible = []
+                }
+            }
+        })
+</script>
+
+</html>

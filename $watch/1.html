@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>$watch-1</title>
+    <script src="../node_modules/angular/angular.js"></script>
+</head>
+
+<body ng-app="app" ng-controller="firstCtrl">
+    <input type="text" ng-model="name">
+</body>
+<script>
+    angular.module('sw', [])
+        .factory('sw_factory', function () {
+            return {
+                test: () => {
+                    console.log('this is from sw_factory')
+                }
+            }
+        })
+    angular.module('app', ['sw'])
+        .controller('firstCtrl', ($scope, sw_factory) => {
+            $scope.$watch('name', newName => {
+                console.log(newName)
+                if (newName === undefined) {
+                    return
+                }
+                sw_factory.test()
+            })
+        })
+</script>
+
+</html>
